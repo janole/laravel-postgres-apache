@@ -33,7 +33,7 @@ TARGET=${IMAGE}:${VERSION}
 #
 echo "*** Build ${TARGET} based on master ..."
 
-docker build --pull --label "maintainer=${MAINTAINER}" -t "${TARGET}" -t "${IMAGE}:${VERSION1}" -t "${IMAGE}:${VERSION0}" -t "${IMAGE}:latest" .
+docker build --label "maintainer=${MAINTAINER}" -t "${TARGET}" -t "${IMAGE}:${VERSION1}" -t "${IMAGE}:${VERSION0}" -t "${IMAGE}:latest" .
 
 exit
 
