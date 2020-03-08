@@ -59,7 +59,7 @@ RUN	true \
 	&& rm -rf /var/lib/apt/lists/*
 
 #
-COPY ./laravel-php.ini $PHP_INI_DIR/zzzz-laravel.ini
+COPY ./laravel-php.ini $PHP_INI_DIR/conf.d/zzzz-laravel.ini
 
 # Install composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
