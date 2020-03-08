@@ -3,6 +3,7 @@ FROM php:7.3-apache
 ENV DEBIAN_FRONTEND noninteractive
 
 WORKDIR /app
+ENV HOME /app
 ENV APACHE_DOCUMENT_ROOT /app/public
 
 ENV APACHE_RUN_USER=www-data
