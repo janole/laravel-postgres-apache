@@ -2,13 +2,22 @@ FROM php:7.3-apache
 
 ENV DEBIAN_FRONTEND noninteractive
 
+#
+# Set project root to /app
+#
 WORKDIR /app
 ENV HOME /app
 ENV APACHE_DOCUMENT_ROOT /app/public
 
+#
+# Run "rootless"
+#
 ENV APACHE_RUN_USER=www-data
 ENV APACHE_RUN_GROUP=www-data
 
+#
+# Install all necessary libs and PHP modules
+#
 RUN	true \
 #
 # Update package list and update packages
