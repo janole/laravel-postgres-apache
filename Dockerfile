@@ -72,7 +72,7 @@ RUN	true \
 COPY ./laravel-php.ini $PHP_INI_DIR/conf.d/zzzz-laravel.ini
 
 # Install composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY --from=composer:1.9 /usr/bin/composer /usr/bin/composer
 
 # Disable warning for running composer as root
 ENV COMPOSER_ALLOW_SUPERUSER=1
