@@ -22,31 +22,31 @@ RUN	true \
 #
 # Update package list and update packages
 #
-	&& apt-get update \
+    && apt-get update \
     && apt-get dist-upgrade -y \
 #
 # Install all necessary PHP mods
 #
-	&& apt-get install -y \
+    && apt-get install -y \
         libxml2-dev zlib1g-dev libpq-dev libsodium-dev libgmp-dev libzip-dev \
         libpng-dev libjpeg62-turbo-dev libfreetype6-dev libxpm-dev libwebp-dev \
-	&& docker-php-ext-configure gd \
+    && docker-php-ext-configure gd \
         --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
         --with-xpm-dir=/usr/incude/ --with-webp-dir=/usr/include/ \
-	&& docker-php-ext-install -j$(nproc) gd xml pgsql pdo_pgsql zip gmp intl opcache \
+    && docker-php-ext-install -j$(nproc) gd xml pgsql pdo_pgsql zip gmp intl opcache \
 #
 # Use the default PHP production configuration
 #
-	&& mv $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini \
+    && mv $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini \
 #
 # Install all other tools
 #
-	&& apt-get install -y localehelper msmtp msmtp-mta vim \
+    && apt-get install -y localehelper msmtp msmtp-mta vim \
 #
 # Prepare folder structure ...
 #
-   	&& mkdir -p bootstrap/cache storage/framework/cache storage/framework/sessions storage/framework/views storage/app \
-	&& chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /app \
+    && mkdir -p bootstrap/cache storage/framework/cache storage/framework/sessions storage/framework/views storage/app \
+    && chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /app \
 #
 # Setup apache
 #
@@ -66,7 +66,7 @@ RUN	true \
 #
 # Clean-up
 #
-	&& rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/*
 
 #
 COPY ./laravel-php.ini $PHP_INI_DIR/conf.d/zzzz-laravel.ini
