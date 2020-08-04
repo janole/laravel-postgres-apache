@@ -35,8 +35,6 @@ echo "*** Build ${TARGET} based on master ..."
 
 docker build --label "maintainer=${MAINTAINER}" -t "${TARGET}" -t "${IMAGE}:${VERSION1}" -t "${IMAGE}:${VERSION0}" -t "${IMAGE}:latest" .
 
-exit
-
 #
 echo "*** Build images dependent on ${TARGET} ..."
 
