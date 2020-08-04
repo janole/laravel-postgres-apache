@@ -1,1 +1,1 @@
-[![Actions Status](https://github.com/janole/laravel-postgres-apache/workflows/build/badge.svg)](https://github.com/janole/laravel-postgres-apache/actions)
+![Build Status](https://github.com/janole/laravel-postgres-apache/workflows/.github/workflows/build.yml/badge.svg)
