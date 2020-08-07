@@ -45,6 +45,7 @@ echo "*** Push images ..."
 docker push "${IMAGE}:${VERSION}"
 docker push "${IMAGE}:${VERSION1}"
 docker push "${IMAGE}:${VERSION0}"
+docker push "${IMAGE}:latest"
 
 docker push "${IMAGE}:${VERSION}-unoconv"
 docker push "${IMAGE}:${VERSION1}-unoconv"
