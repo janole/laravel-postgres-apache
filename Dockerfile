@@ -62,7 +62,8 @@ RUN	true \
 # Create empty startup script
 #
     && echo "#!/bin/sh" > /container-startup.sh \
-    && chmod a+r /container-startup.sh \
+    && chmod u+x /container-startup.sh \
+    && chown ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /container-startup.sh \
 #
 # Clean-up
 #
