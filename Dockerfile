@@ -59,6 +59,10 @@ RUN	true \
     && sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf \
     && sed -ri -e 's!80!8080!g' /etc/apache2/sites-available/*.conf /etc/apache2/ports.conf \
 #
+# Optionally include an Apache2 config file from within the Laravel HOME (/app) directory
+#
+    && echo "IncludeOptional $HOME/.apache2.conf" > /etc/apache2/sites-enabled/999-optional.conf \
+#
 # Create empty startup script
 #
     && echo "#!/bin/sh" > /container-startup.sh \
