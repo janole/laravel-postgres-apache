@@ -37,6 +37,9 @@ VERSION0=`sed "s/\(^[0-9]*\).*/\1/" version`${BRANCH}
 TARGET=${IMAGE}:${VERSION}
 
 #
+if [ "$1" = "-p" ]; then echo $TARGET; exit; fi
+
+#
 echo "*** Build ${TARGET} based on master ..."
 
 docker build --label "maintainer=${MAINTAINER}" -t "${TARGET}" -t "${IMAGE}:${VERSION1}" -t "${IMAGE}:${VERSION0}" -t "${IMAGE}:latest" .
