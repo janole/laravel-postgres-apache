@@ -1,0 +1,30 @@
+name: Scan Image
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 23 * * *'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Get Image Name
+        run: |
+          export IMAGE=$(./build.sh -p | sed "s/\.[0-9a-z-]*$//")
+          echo "::set-env name=IMAGE::${IMAGE}-unoconv"
+      - name: Run trivy
+        uses: aquasecurity/trivy-action@0.0.8
+        with:
+          image-ref: "${{ env.IMAGE }}"
+          format: "table"
+          exit-code: "1"
+          ignore-unfixed: true
+          severity: "HIGH,CRITICAL"
+      - name: Try to start build workflow if trivy failed
+        if: ${{ failure() }}
+        run: |
+          curl -X POST -u ${{ secrets.PAT }} -H "Accept: application/vnd.github.v3+json" -d '{"ref":"refs/heads/master"}' https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/build.yml/dispatches
