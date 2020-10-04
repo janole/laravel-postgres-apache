@@ -41,22 +41,47 @@ TARGET=${IMAGE}:${VERSION}
 if [ "$1" = "-p" ]; then echo $TARGET; exit; fi
 
 #
-echo "*** Build ${TARGET} based on master ..."
-
-docker build --label "maintainer=${MAINTAINER}" -t "${TARGET}" -t "${IMAGE}:${VERSION1}" -t "${IMAGE}:${VERSION0}" -t "${IMAGE}:latest" .
+if [ "$1" = "--dry-run" ]; then DOCKER="echo docker"; else DOCKER="docker"; fi
 
 #
-echo "*** Build images dependent on ${TARGET} ..."
+build()
+{
+    local _DOCKERFILE=$1
+    local _SUFFIX=$2
+    local _FROM=$3
 
-docker build -f unoconv/Dockerfile --label "maintainer=${MAINTAINER}" --build-arg "FROM=${TARGET}" -t "${IMAGE}:${VERSION}-unoconv" -t "${IMAGE}:${VERSION1}-unoconv" -t "${IMAGE}:${VERSION0}-unoconv" .
+    local _TARGET=${IMAGE}:${VERSION}${_SUFFIX}
+    local _TARGET1=${IMAGE}:${VERSION1}${_SUFFIX}
+    local _TARGET0=${IMAGE}:${VERSION0}${_SUFFIX}
 
-echo "*** Push images ..."
+    local _CONTEXT=`dirname $_DOCKERFILE`
 
-docker push "${IMAGE}:${VERSION}"
-docker push "${IMAGE}:${VERSION1}"
-docker push "${IMAGE}:${VERSION0}"
-docker push "${IMAGE}:latest"
+    echo "*** Build ${_TARGET} ${_DOCKERFILE} ${_FROM}"
 
-docker push "${IMAGE}:${VERSION}-unoconv"
-docker push "${IMAGE}:${VERSION1}-unoconv"
-docker push "${IMAGE}:${VERSION0}-unoconv"
+    # build image and tag it with all subversions
+    $DOCKER build --label "maintainer=${MAINTAINER}" --build-arg "FROM=${_FROM}" -t "${_TARGET}" -t "${_TARGET1}" -t "${_TARGET0}" -f ${_DOCKERFILE} $_CONTEXT
+
+    # push image with all subversions
+    echo "${_TARGET}" "${_TARGET1}" "${_TARGET0}" | xargs -n 1 $DOCKER push
+
+    # build optional images if not "stop"
+    if [ -z "$4" ]; then
+
+        for option in options/*/Dockerfile ; do
+
+            OPTION=`dirname $option | sed "s/[^/]*\///"`
+            build $option $SUFFIX-$OPTION $_TARGET stop
+
+        done
+
+    fi
+}
+
+# build the base-image
+build Dockerfile
+
+# build all variants
+for variant in */Dockerfile ; do
+    SUFFIX=-`dirname $variant`
+    build $variant $SUFFIX $TARGET
+done
