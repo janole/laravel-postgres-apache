@@ -22,6 +22,7 @@ fi
 #
 COUNT=`git rev-list HEAD --count 2>/dev/null`
 
+# append "-manual" to image name if triggered manually
 if [ "${GITHUB_EVENT_NAME}" = "workflow_dispatch" ]; then
     COUNT="${COUNT}-manual"
 fi
