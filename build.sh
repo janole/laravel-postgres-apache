@@ -58,8 +58,11 @@ build()
 
     echo "*** Build ${_TARGET} ${_DOCKERFILE} ${_FROM}"
 
+    # always try to pull base image, but only for main Dockerfile
+    if [ -z "$_FROM" ]; then PULL="--pull"; else PULL=""; fi
+
     # build image and tag it with all subversions
-    $DOCKER build --label "maintainer=${MAINTAINER}" --build-arg "FROM=${_FROM}" -t "${_TARGET}" -t "${_TARGET1}" -t "${_TARGET0}" -f ${_DOCKERFILE} $_CONTEXT
+    $DOCKER build $PULL --label "maintainer=${MAINTAINER}" --build-arg "FROM=${_FROM}" -t "${_TARGET}" -t "${_TARGET1}" -t "${_TARGET0}" -f ${_DOCKERFILE} $_CONTEXT
 
     # push image with all subversions
     echo "${_TARGET}" "${_TARGET1}" "${_TARGET0}" | xargs -n 1 $DOCKER push
