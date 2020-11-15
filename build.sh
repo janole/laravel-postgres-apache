@@ -44,6 +44,9 @@ if [ "$1" = "-p" ]; then echo $TARGET; exit; fi
 if [ "$1" = "--dry-run" ]; then DOCKER="echo docker"; else DOCKER="docker"; fi
 
 #
+if [ "$1" = "--no-push" ]; then NOPUSH=1; fi
+
+#
 build()
 {
     local _DOCKERFILE=$1
@@ -65,7 +68,9 @@ build()
     $DOCKER build $PULL --label "maintainer=${MAINTAINER}" --build-arg "FROM=${_FROM}" -t "${_TARGET}" -t "${_TARGET1}" -t "${_TARGET0}" -f ${_DOCKERFILE} $_CONTEXT
 
     # push image with all subversions
-    echo "${_TARGET}" "${_TARGET1}" "${_TARGET0}" | xargs -n 1 $DOCKER push
+    if [ -z "$NOPUSH" ]; then
+        echo "${_TARGET}" "${_TARGET1}" "${_TARGET0}" | xargs -n 1 $DOCKER push
+    fi
 
     # build optional images if not "stop"
     if [ -z "$4" ]; then
