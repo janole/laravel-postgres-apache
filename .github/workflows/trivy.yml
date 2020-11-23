@@ -15,7 +15,7 @@ jobs:
       - name: Get Image Name
         run: |
           export IMAGE=$(./build.sh -p | sed "s/\.[0-9a-z-]*$//")
-          echo "::set-env name=IMAGE::${IMAGE}-unoconv"
+          echo "IMAGE=${IMAGE}-unoconv" >> $GITHUB_ENV
       - name: Run trivy
         uses: aquasecurity/trivy-action@0.0.8
         with:
