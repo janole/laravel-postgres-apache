@@ -29,6 +29,10 @@ ENV XDEBUG_REMOTE_ENABLE=1
 # See https://github.com/qoomon/docker-host for Linux
 ENV XDEBUG_REMOTE_HOST="host.docker.internal"
 ENV XDEBUG_REMOTE_PORT=9000
+# XDEBUG v3
+ENV XDEBUG_MODE=debug
+ENV XDEBUG_CLIENT_HOST="host.docker.internal"
+ENV XDEBUG_CLIENT_PORT=9000
 
 #
 USER ${APACHE_RUN_USER}
