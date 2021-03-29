@@ -23,7 +23,6 @@ RUN	true \
 # Update package list and update packages
 #
     && apt-get update \
-    && apt-get dist-upgrade -y \
 #
 # Install all necessary PHP mods
 #
