@@ -20,9 +20,14 @@ ENV APACHE_RUN_GROUP=www-data
 #
 RUN	true \
 #
-# Update package list and update packages
+# Update package list
 #
     && apt-get update \
+#
+# Upgrade packages to fix potential security issues:
+# - This will inflate our image, but the base image isn't updated quickly enough
+#    
+    && apt-get upgrade -y \
 #
 # Install all necessary PHP mods
 #
