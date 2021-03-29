@@ -75,7 +75,7 @@ RUN	true \
 #
 # Clean-up
 #
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* /usr/share/vim
 
 #
 COPY ./laravel-php.ini $PHP_INI_DIR/conf.d/zzzz-laravel.ini
