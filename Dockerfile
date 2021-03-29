@@ -42,6 +42,11 @@ RUN	true \
 #
     && apt-get install -y localehelper msmtp msmtp-mta vim \
 #
+# Install composer 1.9
+#
+    && curl https://getcomposer.org/download/1.9.3/composer.phar --output /usr/bin/composer  \
+    && chmod a+x /usr/bin/composer \
+#
 # Prepare folder structure ...
 #
     && mkdir -p bootstrap/cache storage/framework/cache storage/framework/sessions storage/framework/views storage/app \
@@ -74,9 +79,6 @@ RUN	true \
 
 #
 COPY ./laravel-php.ini $PHP_INI_DIR/conf.d/zzzz-laravel.ini
-
-# Install composer
-COPY --from=composer:1.9 /usr/bin/composer /usr/bin/composer
 
 # Disable warning for running composer as root
 ENV COMPOSER_ALLOW_SUPERUSER=1
