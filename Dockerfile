@@ -23,7 +23,6 @@ RUN	true \
 # Update package list and update packages
 #
     && apt-get update \
-    && apt-get dist-upgrade -y \
 #
 # Install all necessary PHP mods
 #
@@ -42,6 +41,11 @@ RUN	true \
 # Install all other tools
 #
     && apt-get install -y localehelper msmtp msmtp-mta vim \
+#
+# Install composer 1.9
+#
+    && curl https://getcomposer.org/download/1.9.3/composer.phar --output /usr/bin/composer  \
+    && chmod a+x /usr/bin/composer \
 #
 # Prepare folder structure ...
 #
@@ -71,13 +75,10 @@ RUN	true \
 #
 # Clean-up
 #
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* /usr/share/vim
 
 #
 COPY ./laravel-php.ini $PHP_INI_DIR/conf.d/zzzz-laravel.ini
-
-# Install composer
-COPY --from=composer:1.9 /usr/bin/composer /usr/bin/composer
 
 # Disable warning for running composer as root
 ENV COMPOSER_ALLOW_SUPERUSER=1
