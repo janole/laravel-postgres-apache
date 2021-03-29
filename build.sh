@@ -78,18 +78,24 @@ build()
         for option in options/*/Dockerfile ; do
 
             OPTION=`dirname $option | sed "s/[^/]*\///"`
-            build $option $SUFFIX-$OPTION $_TARGET stop
+            build $option $_SUFFIX-$OPTION $_TARGET stop
 
         done
 
     fi
 }
 
-# build the base-image
-build Dockerfile
+for base in Dockerfile* ; do
 
-# build all variants
-for variant in */Dockerfile ; do
-    SUFFIX=-`dirname $variant`
-    build $variant $SUFFIX $TARGET
+    ALT=`echo $base | sed "s/Dockerfile//;s/^\./-/;"`
+
+    # build the base-image
+    build $base $ALT
+
+    # build all variants
+    for variant in */Dockerfile ; do
+        SUFFIX=$ALT-`dirname $variant`
+        build $variant $SUFFIX $TARGET
+    done
+
 done
